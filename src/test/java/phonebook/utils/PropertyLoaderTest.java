@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 
 /**
- * Класс PropertyLoaderTest тестирует класс PropertyLoader.
+ * Class PropertyLoaderTest tests class PropertyLoader.
  *
  * @author Goureev Ilya (mailto:ill-jah@yandex.ru)
  * @version 2019-09-29
@@ -15,8 +15,8 @@ import static org.junit.Assert.assertFalse;
  */
 public class PropertyLoaderTest {
     /**
-     * Тестирует public PropertyLoader(URL url) throws IOException.
-     * @throws Exception исключение.
+     * Tests public PropertyLoader(URL url) throws IOException.
+     * @throws Exception exception.
      */
     @Test
     public void testPropertyLoaderWithURLparam() throws Exception {

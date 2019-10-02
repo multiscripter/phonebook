@@ -6,14 +6,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 /**
  * Class "Entry" implements entity "Entry".
- * @version 2019-09-19
+ * @version 2019-10-02
  * @since 2018-09-19
  */
 @Entity
 @Table(name = "phone_book")
+@XmlRootElement
 public class Entry {
     /**
      * Идентификатор записи.

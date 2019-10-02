@@ -2,7 +2,6 @@ package phonebook.config;
 
 import java.util.Properties;
 import javax.sql.DataSource;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -20,17 +19,20 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-//@ComponentScan(basePackages = "phonebook.*")
 @Configuration
 public class DbConfig {
 
     @Bean
     DataSource dataSource() {
+        Properties properties = new Properties();
+        properties.setProperty("useUnicode", "yes");
+        properties.setProperty("characterEncoding", "UTF-8");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/phone_book");
         dataSource.setUsername("root");
         dataSource.setPassword("mysqlrootpass");
+        dataSource.setConnectionProperties(properties);
         DatabasePopulatorUtils.execute(createDatabasePopulator(), dataSource);
         return dataSource;
     }

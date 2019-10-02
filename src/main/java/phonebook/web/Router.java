@@ -31,6 +31,12 @@ public class Router {
     @Autowired
     private EntryRepository repoEntry;
 
+    /**
+     * Обрабатывает GET-запросы к URI /get-entry/1/.
+     * curl http://localhost:8080/get-entry/1/
+     * @param id идентификатор записи.
+     * @return запись.
+     */
     @GetMapping("/get-entry/{id}/")
     public @ResponseBody Entry getEntry(@PathVariable long id) {
         return repoEntry.findById(id).get();

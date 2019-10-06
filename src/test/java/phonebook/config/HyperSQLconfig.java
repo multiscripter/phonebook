@@ -1,8 +1,12 @@
 package phonebook.config;
 
+import java.util.Properties;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -11,15 +15,10 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.util.Properties;
 
 /**
  * Class HyperSQLconfig contains HyperSQL configuration.
@@ -32,15 +31,12 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactory",
-        transactionManagerRef = "HyperSQLTransactionManager"
+        transactionManagerRef = "transactionManager"
 )
 public class HyperSQLconfig {
     @Bean(name = "HyperSQLdatasource")
-    @Profile("HyperSQL")
-    public DataSource getHyperSQLdataSource() {
+    public DataSource dataSource() {
         Properties properties = new Properties();
-        //properties.setProperty("useUnicode", "yes");
-        //properties.setProperty("characterEncoding", "UTF-8");
         properties.setProperty("get_column_name", "false");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
@@ -56,7 +52,7 @@ public class HyperSQLconfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(this.getHyperSQLdataSource());
+        em.setDataSource(this.dataSource());
         em.setPackagesToScan("phonebook");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(false);
@@ -66,7 +62,7 @@ public class HyperSQLconfig {
     }
 
     @Bean(name = "transactionManager")
-    public PlatformTransactionManager getHyperSQLTransactionManager(
+    public PlatformTransactionManager transactionManager(
             @Qualifier("entityManagerFactory") EntityManagerFactory
                     barEntityManagerFactory
     ) {

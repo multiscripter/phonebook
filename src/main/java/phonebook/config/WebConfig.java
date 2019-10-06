@@ -16,11 +16,11 @@ import phonebook.models.EntryList;
  * Class WebConfig realize configuration servlet-context.xml.
  *
  * @author Multiscripter
- * @version 2019-10-01
+ * @version 2019-10-06
  * @since 2019-10-01
  */
 @Configuration
-@ComponentScan(basePackages = "phonebook.*")
+@ComponentScan({"phonebook.controllers", "phonebook.services"})
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

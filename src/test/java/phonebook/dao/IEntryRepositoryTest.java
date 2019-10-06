@@ -1,6 +1,5 @@
 package phonebook.dao;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,9 +8,14 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import phonebook.checking.DBDriver;
+import phonebook.config.HyperSQLconfig;
 import phonebook.models.Entry;
 import phonebook.utils.PropertyLoader;
 import static org.junit.Assert.assertEquals;
@@ -23,22 +27,26 @@ import static org.junit.Assert.assertEquals;
  * @version 2019-10-06
  * @since 2018-09-19
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {HyperSQLconfig.class})
+@WebAppConfiguration
+@EnableJpaRepositories("phonebook.dao")
 public class IEntryRepositoryTest {
-
     /**
-     * DBMS driver.
+     * DB driver.
      */
     private static DBDriver driver;
 
     /**
-     * Sql file fath.
+     * Sql file path.
      */
     private static String path;
 
     /**
      * Entry repository.
      */
-    private static IEntryRepository repo;
+    @Autowired
+    private IEntryRepository repo;
 
     /**
      * Actions after each test.
@@ -68,9 +76,6 @@ public class IEntryRepositoryTest {
         path = loader.getResource(".").getPath();
         path = path.replaceFirst("^/(.:/)", "$1");
         String dbmsName = new PropertyLoader(String.format("%s%s", path, "activeDBMS.properties")).getPropValue("name");
-        String ctxFile = String.format("spring-context.%s.xml", dbmsName);
-        ApplicationContext ctx = new ClassPathXmlApplicationContext(ctxFile);
-        repo = ctx.getBean(IEntryRepository.class);
         driver = new DBDriver(path + dbmsName);
         path = loader.getResource(String.format("phonebook.%s.sql", dbmsName))
                 .getPath();
@@ -94,7 +99,7 @@ public class IEntryRepositoryTest {
     public void testFindAll() throws Exception {
         String query = "select * from phone_book";
         List<Entry> expected = this.getExpected(query);
-        List<Entry> actual = (List<Entry>) repo.findAll();
+        List<Entry> actual = repo.findAll();
         assertEquals(expected, actual);
     }
 

@@ -10,7 +10,7 @@ import phonebook.models.Entry;
  * Class EntryService realizes entity "Entry service".
  *
  * @author Multiscripter
- * @version 2019-10-05
+ * @version 2019-10-06
  * @since 2018-10-05
  */
 @Service
@@ -22,6 +22,22 @@ public class EntryService {
     private IEntryRepository repository;
 
     /**
+     * Deletes entry by identifier.
+     * @param id entry identifier.
+     */
+    public void deleteById(long id) {
+        this.repository.deleteById(id);
+    }
+
+    /**
+     * Finds all entries.
+     * @return entry list.
+     */
+    public List<Entry> findAll() {
+        return this.repository.findAll();
+    }
+
+    /**
      * Finds entry by its identifier.
      * @param id entry identifier.
      * @return found entry.
@@ -31,11 +47,21 @@ public class EntryService {
     }
 
     /**
-     * Finds all entries.
+     * Finds entries by last name.
+     * @param lastName entries by last name.
      * @return entry list.
      */
-    public List<Entry> findAll() {
-        return this.repository.findAll();
+    public List<Entry> findByLastName(String lastName) {
+        return this.repository.findByLastName(lastName);
+    }
+
+    /**
+     * Finds entries by phone number.
+     * @param number phone number.
+     * @return entry list.
+     */
+    public List<Entry> findByNumber(int number) {
+        return this.repository.findByNumber(number);
     }
 
     /**

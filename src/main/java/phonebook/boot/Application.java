@@ -7,10 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * Собирать командой: mvn clean package
- * Запускать командой: java -jar ./target/%локальное_имя_файла%.war
- * По умолчанию контекст приложения - это корень вэб-вервера.
- * Поэтому приложение открывается по адресу http://localhost:8080/
+ * Build with command: mvn clean package
+ * Run with command: java -jar ./target/%локальное_имя_файла%.war
+ * By default, the application context is the root of the web server.
+ * Therefore, the application opens at http://localhost:8080/
+ *
  * @author Multiscripter
  * @version 2019-10-01
  * @since 2017-10-01
@@ -18,11 +19,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @ComponentScan(basePackages = "phonebook.*")
 @EntityScan("phonebook.models")
-@EnableJpaRepositories("phonebook.services")
+@EnableJpaRepositories("phonebook.dao")
 public class Application {
     /**
-     * Главный метод. Точка входа в приложение.
-     * @param args массив аргументов запуска.
+     * The main method. Application Entry Point.
+     * @param args array of startup arguments.
      */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

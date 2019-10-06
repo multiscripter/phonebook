@@ -14,16 +14,16 @@
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="classpath:phonebook.MySQL.sql"/>
+        <jdbc:script location="classpath:phonebook.HyperSQL.sql"/>
     </jdbc:initialize-database>
 
     <bean
             id="dataSource"
             class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/phone_book" />
-        <property name="username" value="root" />
-        <property name="password" value="mysqlrootpass" />
+        <property name="driverClassName" value="org.hsqldb.jdbc.JDBCDriver" />
+        <property name="url" value="jdbc:hsqldb:mem:phone_book;get_column_name=false" />
+        <property name="username" value="SA" />
+        <property name="password" value="" />
     </bean>
 
     <bean
@@ -38,7 +38,7 @@
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
             </props>
         </property>
     </bean>
@@ -50,5 +50,5 @@
     </bean>
 
     <context:component-scan base-package="phonebook" />
-    <jpa:repositories base-package="phonebook.services" />
+    <jpa:repositories base-package="phonebook.dao" />
 </beans>

@@ -13,26 +13,30 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 //import org.junit.Ignore;
 import org.junit.Test;
+import phonebook.controllers.AbstractTest;
 import phonebook.utils.PropertyLoader;
+
 /**
- * Класс DBDriverTest тестирует класс DBDriver.
+ * Class DBDriverTest tests class DBDriver.
  *
- * @author Gureyev Ilya (mailto:ill-jah@yandex.ru)
- * @version 2019-09-29
+ * @author Multiscripter
+ * @version 2019-10-06
  * @since 2018-03-09
  */
 public class DBDriverTest {
     /**
-     * Драйвер бд.
+     * DBMS driver.
      */
     private static DBDriver driver;
+
     /**
-     * Локальное ямя sql-скрипта.
+     * Local file name with sql.
      */
     private static String sqlScriptName;
+
     /**
-     * Действия перед тестом.
-     * @throws Exception исключение.
+     * Actions before all tests.
+     * @throws Exception exception.
      */
     @BeforeClass
     public static void beforeAllTests() throws Exception {
@@ -55,36 +59,42 @@ public class DBDriverTest {
             pass = "postgresrootpass";
         }*/
         /**
-         * Получает абсолютный путь до папки с ресурсами.
-         * В случае с Maven это: target/test-classes/
+         * Gets the absolute path to the resource folder.
+         * If uses Maven: target/test-classes/
          */
-        String path = DBDriverTest.class.getClassLoader().getResource(".").getPath();
+        ClassLoader loader = AbstractTest.class.getClassLoader();
+        String path = loader.getResource(".").getPath();
         path = path.replaceFirst("^/(.:/)", "$1");
         String dbmsName = new PropertyLoader(String.format("%s%s", path, "activeDBMS.properties")).getPropValue("name");
         driver = new DBDriver(path + dbmsName);
-        sqlScriptName = String.format("%sphonebook.%s.sql", path, dbmsName);
+        path = loader.getResource(String.format("phonebook.%s.sql", dbmsName))
+                .getPath();
+        sqlScriptName = path.replaceFirst("^/(.:/)", "$1");
     }
+
     /**
-     * Действия перед тестом.
-     * @throws Exception исключение.
+     * Actions before each test.
+     * @throws Exception exception.
      */
     @Before
     public void beforeEachTest() throws Exception {
         driver.executeSqlScript(sqlScriptName);
     }
+
     /**
-     * Тестирует public int delete(String query) throws SQLException.
-     * @throws Exception исключение.
+     * Tests public int delete(String query) throws SQLException.
+     * @throws Exception exception.
      */
     @Test
     public void testDelete() throws Exception {
         int affected = driver.delete("delete from phone_book");
         assertEquals(6, affected);
     }
+
     /**
-     * Тестирует public int delete(String query) throws SQLException.
-     * Явная установка соединения.
-     * @throws Exception исключение.
+     * Tests public int delete(String query) throws SQLException.
+     * Explicit connection setup.
+     * @throws Exception exception.
      */
     @Test
     public void testDeleteConnectionEstablished() throws Exception {
@@ -92,10 +102,11 @@ public class DBDriverTest {
         int affected = driver.delete("delete from phone_book");
         assertEquals(6, affected);
     }
+
     /**
-     * Тестирует public int delete(String query) throws SQLException.
-     * Соединение закрыто.
-     * @throws Exception исключение.
+     * Tests public int delete(String query) throws SQLException.
+     * Connection closed.
+     * @throws Exception exception.
      */
     @Test
     public void testDeleteConnectionClosed() throws Exception {
@@ -103,37 +114,41 @@ public class DBDriverTest {
         int affected = driver.delete("delete from phone_book");
         assertEquals(6, affected);
     }
+
     /**
-     * Тестирует public int delete(String query) throws SQLException.
+     * Tests public int delete(String query) throws SQLException.
      * Выброс SQLException.
-     * @throws SQLException исключение (java.sql.SQLException).
+     * @throws SQLException exception (java.sql.SQLException).
      */
     @Test(expected = SQLException.class)
     public void testDeleteThrowsSQLException() throws SQLException {
         driver.delete("delete from zzzz");
     }
+
     /**
-     * Тестирует public void executeSql(String query) throws SQLException.
-     * @throws Exception исключение.
+     * Tests public void executeSql(String query) throws SQLException.
+     * @throws Exception exception.
      */
     @Test
     public void testExecuteSql() throws Exception {
         boolean result = driver.executeSql("select * from phone_book");
         assertTrue(result);
     }
+
     /**
-     * Тестирует public void executeSql(String query) throws SQLException.
+     * Tests public void executeSql(String query) throws SQLException.
      * Выброс SQLException.
-     * @throws SQLException исключение (java.sql.SQLException).
+     * @throws SQLException exception (java.sql.SQLException).
      */
     @Test(expected = SQLException.class)
     public void testExecuteSqlThrowsSQLException() throws SQLException {
         driver.executeSql("select * from test_table");
     }
+
     /**
-     * Тестирует public int[] executeSqlScript(String name) throws IOException, NullPointerException, SQLException, URISyntaxException.
+     * Tests public int[] executeSqlScript(String name) throws IOException, NullPointerException, SQLException, URISyntaxException.
      * Выброс NoSuchFileException.
-     * @throws NoSuchFileException исключение Нет такого файла.
+     * @throws NoSuchFileException exception "No such file".
      */
     @Test(expected = NoSuchFileException.class)
     public void testExecuteSqlScriptThrowsNoSuchFileException() throws NoSuchFileException {
@@ -145,36 +160,40 @@ public class DBDriverTest {
             ex.printStackTrace();
         }
     }
+
     /**
-     * Тестирует public boolean isValid() throws SQLException.
-     * @throws Exception исключение.
+     * Tests public boolean isValid() throws SQLException.
+     * @throws Exception exception.
      */
     @Test
     public void testIsValid() throws Exception {
         driver.setConnection();
         assertTrue(driver.isValid());
     }
+
     /**
-     * Тестирует public LinkedList<HashMap<String, String>> select(String query) throws SQLException.
-     * @throws Exception исключение.
+     * Tests public LinkedList<HashMap<String, String>> select(String query) throws SQLException.
+     * @throws Exception exception.
      */
     @Test
     public void testSelect() throws Exception {
         LinkedList<HashMap<String, String>> result = driver.select("select * from phone_book");
         assertTrue(result.size() > 0);
     }
+
     /**
-     * Тестирует public LinkedList<HashMap<String, String>> select(String query) throws SQLException.
+     * Tests public LinkedList<HashMap<String, String>> select(String query) throws SQLException.
      * Выброс SQLException.
-     * @throws SQLException исключение (java.sql.SQLException).
+     * @throws SQLException exception (java.sql.SQLException).
      */
     @Test(expected = SQLException.class)
     public void testSelectThrowsSQLException() throws SQLException {
         driver.select("select * from test_table");
     }
+
     /**
-     * Тестирует public void setConnection() throws SQLException.
-     * @throws Exception исключение.
+     * Tests public void setConnection() throws SQLException.
+     * @throws Exception exception.
      */
     @Test
     public void testSetConnection() throws Exception {
@@ -182,18 +201,20 @@ public class DBDriverTest {
         driver.setConnection();
         assertTrue(driver.isValid());
     }
+
     /**
-     * Тестирует public int update(String query) throws SQLException.
-     * @throws Exception исключение.
+     * Tests public int update(String query) throws SQLException.
+     * @throws Exception exception.
      */
     @Test
     public void testUpdate() throws Exception {
         int affected = driver.update("update phone_book set first_name = 'Zorro' where id = 1");
         assertEquals(1, affected);
     }
+
     /**
-     * Действия после всех тестов.
-     * @throws Exception исключение.
+     * Actions after all tests.
+     * @throws Exception exception.
      */
     @AfterClass
     public static void afterAllTests() throws Exception {

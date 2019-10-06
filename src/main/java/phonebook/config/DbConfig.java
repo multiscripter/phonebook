@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -22,8 +23,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 public class DbConfig {
 
-    @Bean
-    DataSource dataSource() {
+    @Bean(name = "MySQLdatasource")
+    @Profile("MySQL")
+    DataSource getMySQLdataSource() {
         Properties properties = new Properties();
         properties.setProperty("useUnicode", "yes");
         properties.setProperty("characterEncoding", "UTF-8");
@@ -64,7 +66,7 @@ public class DbConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(this.dataSource());
+        em.setDataSource(this.getMySQLdataSource());
         em.setPackagesToScan("phonebook.models");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

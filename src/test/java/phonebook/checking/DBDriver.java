@@ -15,22 +15,25 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Properties;
 import phonebook.utils.PropertyLoader;
+
 /**
  * Класс DBDriver используется в тестах для проверки классов, работающих с СУБД.
  * https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
- * @author Gureyev Ilya (mailto:ill-jah@yandex.ru)
+ * @author Multiscripter
  * @version 2019-09-19
  * @since 2018-03-07
  */
 public class DBDriver {
     /**
-     * Соединение с бд.
+     * Connection to the database.
      */
 	private Connection con;
+
     /**
-     * Свойства настроек бд.
+     * Db settings properties.
      */
     private final Properties props;
+
     /**
      * Конструктор.
      * @param path абсолютный путь к папке ресурсов.
@@ -46,6 +49,7 @@ public class DBDriver {
         Class.forName(this.props.getProperty("driver")).newInstance(); //load driver
         this.setConnection();
     }
+
     /**
      * Закрывает соединение с СУБД.
      * @throws SQLException ошибка SQL.
@@ -55,6 +59,7 @@ public class DBDriver {
             this.con.close();
         }
     }
+
     /**
      * Выполняет вудуеу sql-запрос.
      * @param query sql-запрос.
@@ -73,6 +78,7 @@ public class DBDriver {
         }
         return affected;
 	}
+
     /**
      * Выполняет sql-запрос.
      * @param query строка с sql-запросом.
@@ -91,6 +97,7 @@ public class DBDriver {
             throw new SQLException(ex);
         }
     }
+
     /**
      * Выполняет набор инструкций из sql-скрипта.
      * @param name имя sql-файла.
@@ -127,6 +134,7 @@ public class DBDriver {
         con.setAutoCommit(true);
         return affectedRowsArr;
     }
+
     /**
      * Проверяет соединение на валидность.
      * @return true если соединение с СУБД валидное. Иначе false.
@@ -135,6 +143,7 @@ public class DBDriver {
     public boolean isValid() throws SQLException {
         return this.con.isValid(0);
     }
+
     /**
      * Загружает свойства соединения с бд.
      * @param localName локальное имя properties-файла.
@@ -146,6 +155,7 @@ public class DBDriver {
         InputStream is = Files.newInputStream(fName);
         this.props.load(is);
     }*/
+
     /**
      * Выполняет select sql-запрос.
      * @param query sql-запрос.
@@ -173,6 +183,7 @@ public class DBDriver {
         }
         return rl;
     }
+
     /**
      * Устанавливает соединение с СУБД.
      * @throws SQLException ошибка SQL.
@@ -197,6 +208,7 @@ public class DBDriver {
             }
         }
     }
+
     /**
      * Выполняет update sql-запрос.
      * @param query sql-запрос.

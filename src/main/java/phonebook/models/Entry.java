@@ -8,8 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
+
 /**
- * Class "Entry" implements entity "Entry".
+ * Class "Entry" realize entity "Entry".
+ *
+ * @author Multiscripter
  * @version 2019-10-02
  * @since 2018-09-19
  */
@@ -18,7 +21,7 @@ import java.util.Objects;
 @XmlRootElement
 public class Entry {
     /**
-     * Идентификатор записи.
+     * Entry identifier.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

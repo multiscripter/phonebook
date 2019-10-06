@@ -6,10 +6,11 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.List;
 
 /**
- * Класс EntryList реализует модель данных Список записей.
- * Аннотация @XmlSeeAlso({Name1.class,Name2.class}) позволяет
- * включить в контекст JAXBContext указанные классы.
+ * Class EntryList realize entity Entry list.
+ * Annotation @XmlSeeAlso({Name1.class,Name2.class}) allows to include
+ * the specified classes in the JAXBContext context.
  *
+ * @author Multiscripter
  * @version 2019-10-01
  * @since 2019-10-01
  */
@@ -17,13 +18,13 @@ import java.util.List;
 @XmlSeeAlso({Entry.class})
 public class EntryList {
     /**
-     * Список записей.
+     * Entry list.
      */
     private List<Entry> list;
 
     /**
-     * Получает список записей.
-     * @return список записей.
+     * Gets entry list.
+     * @return entry list.
      */
     @XmlElement(name = "Entry")
     public List<Entry> getEntryList() {
@@ -31,8 +32,8 @@ public class EntryList {
     }
 
     /**
-     * Устанавливает список записей.
-     * @param list список записей.
+     * Sets entry list.
+     * @param list entry list.
      */
     public void setEntryList(List<Entry> list) {
         this.list = list;

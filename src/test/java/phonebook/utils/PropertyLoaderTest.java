@@ -9,7 +9,7 @@ import static org.junit.Assert.assertFalse;
 /**
  * Class PropertyLoaderTest tests class PropertyLoader.
  *
- * @author Goureev Ilya (mailto:ill-jah@yandex.ru)
+ * @author Multiscripter
  * @version 2019-09-29
  * @since 2019-05-28
  */

@@ -1,4 +1,4 @@
-package phonebook.services;
+package phonebook.dao;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,11 +17,13 @@ import phonebook.utils.PropertyLoader;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Class EntryRepositoryTest tests EntryRepository.
- * @version 2019-09-19
+ * Class IEntryRepositoryTest tests IEntryRepository.
+ *
+ * @author Multiscripter
+ * @version 2019-10-06
  * @since 2018-09-19
  */
-public class EntryRepositoryTest {
+public class IEntryRepositoryTest {
 
     /**
      * DBMS driver.
@@ -36,7 +38,7 @@ public class EntryRepositoryTest {
     /**
      * Entry repository.
      */
-    private static EntryRepository repo;
+    private static IEntryRepository repo;
 
     /**
      * Actions after each test.
@@ -62,16 +64,17 @@ public class EntryRepositoryTest {
      */
     @BeforeClass
     public static void beforeAllTests() throws Exception {
-        path = EntryRepositoryTest.class.getClassLoader().getResource(".").getPath();
+        ClassLoader loader = IEntryRepositoryTest.class.getClassLoader();
+        path = loader.getResource(".").getPath();
         path = path.replaceFirst("^/(.:/)", "$1");
         String dbmsName = new PropertyLoader(String.format("%s%s", path, "activeDBMS.properties")).getPropValue("name");
         String ctxFile = String.format("spring-context.%s.xml", dbmsName);
         ApplicationContext ctx = new ClassPathXmlApplicationContext(ctxFile);
-        repo = ctx.getBean(EntryRepository.class);
+        repo = ctx.getBean(IEntryRepository.class);
         driver = new DBDriver(path + dbmsName);
-        path = new File(DBDriver.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath() + "/";
+        path = loader.getResource(String.format("phonebook.%s.sql", dbmsName))
+                .getPath();
         path = path.replaceFirst("^/(.:/)", "$1");
-        path = String.format("%sphonebook.%s.sql", path, dbmsName);
     }
 
     /**
@@ -84,7 +87,7 @@ public class EntryRepositoryTest {
     }
 
     /**
-     * Tests Iterable<T> findAll().
+     * Tests Iterable<Entry> findAll().
      * @throws java.lang.Exception exception.
      */
     @Test

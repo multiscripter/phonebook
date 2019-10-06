@@ -13,8 +13,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import phonebook.models.EntryList;
 
 /**
- * Класс WebConfig реализует конфигурацию servlet-context.xml.
+ * Class WebConfig realize configuration servlet-context.xml.
  *
+ * @author Multiscripter
  * @version 2019-10-01
  * @since 2019-10-01
  */
@@ -39,9 +40,9 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     /**
-     * Корневой элемент списка записей.
-     * Требуется для XML-ответа при запросе списка записей.
-     * @return бин списка записей.
+     * Root element of entry list.
+     * Required for XML response when querying a list of entries.
+     * @return entry list bean.
      */
     @Bean
     public EntryList entryList() {

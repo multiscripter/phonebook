@@ -5,8 +5,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
+
 /**
  * Class "EntryTest" tests class "Entry".
+ *
+ * @author Multiscripter
  * @version 2019-09-19
  * @since 2018-09-19
  */

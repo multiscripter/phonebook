@@ -10,6 +10,7 @@ import phonebook.models.Entry;
  * Class EntryService realizes entity "Entry service".
  *
  * @author Multiscripter
+ * @version 2019-10-07 Repository injection moved to constructor.
  * @version 2019-10-06
  * @since 2018-10-05
  */
@@ -18,8 +19,16 @@ public class EntryService {
     /**
      * Entry repository.
      */
-    @Autowired
     private IEntryRepository repository;
+
+    /**
+     * Constructor.
+     * @param repository entry repository.
+     */
+    @Autowired
+    public EntryService(IEntryRepository repository) {
+        this.repository = repository;
+    }
 
     /**
      * Deletes entry by identifier.
